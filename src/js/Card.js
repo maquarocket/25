@@ -21,6 +21,14 @@ class Card extends Object {
         this.#suit = suit;
     }
 
+    get_value() {
+        return this.#value;
+    }
+
+    get_suit() {
+        return this.#suit;
+    }
+
     /**
      * Greater than operation, only compares value.
      * @param {Card} other - Other card to be compared against.
