@@ -121,3 +121,17 @@ console.assert(evl[0] == 1 && evl[1].length == 4 && evl[1][0] == Value[9] && evl
 let highcard = new Hand([nc('2', 'H'), nc('3', 'H'), nc('A', 'D'), nc('4', 'H'), nc('K', 'C'), nc('J', 'S'), nc('Q', 'S')]);
 evl = highcard.evaluate();
 console.assert(evl[0] == 0 && evl[1].length == 5 && evl[1][0] == Value.A && evl[1][1] == Value.K && evl[1][2] == Value.Q && evl[1][3] == Value.J && evl[1][4] == Value[4]);
+
+
+// Testing ordering of draw & push.
+import Deck from "./Deck.js";
+let deck = new Deck();
+console.assert(deck.count() == 52);
+for (let i = 0; i < 52; i++) {
+    let card = deck.draw();
+    card = [card, i];
+    deck.push(card);
+}
+for (let i = 0; i < 52; i++) {
+    console.assert(deck.draw()[1] == i);
+}
