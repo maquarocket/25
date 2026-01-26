@@ -3,86 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css" />
     <title>25</title>
 </head>
 <body>
-<div class="instructions-bar">
-    <h1>How to play 25</h1>
-    <div class="setup">
+    <div class="quick-instructions">
+        <h1>Welcome to 25! A variant of Texas Hold'em Poker!</h1>
+        <p>Here's a quick guide on how to play:</p>
+        <button class="hide-quick-instructions">Thanks, I know how to play!</button>
         <h2>Setup</h2>
         <ul>
-            <li>Play with a standard 52-card deck. Choose a <i>dealer</i> at the start of the game.</li>
-            <li>Player to the dealer's right gets a container to place their bets into. (<i>Run pool</i>)</li>
-            <li><i>Dealer</i> deals 2 cards face-down into each player's hand. (<i>Cards-in-hand</i>)</li>
-            <li>
-                <i>Dealer</i> deals 1 extra card to each player, face-down on the table. (<i>Backup card</i>)
-                <ul><li>Players may peek at their own dealt <i>backup card</i>.</li></ul>
-            </li>
+            <li>Start with 2 cards + 1 backup card (face-down) per person.</li>
+            <li>One person gets a bowl (run pool).</li>
         </ul>
-    </div>
-    <div class="play">
         <h2>Play</h2>
         <ul>
-            <li>Play proceeds in 2 alternating phases: betting phase, and dealing phase.</li>
-            <ul><li>The order is as follows: betting phase, dealing phase, betting phase, dealing phase, betting phase, dealing phase, betting phase, end</li></ul>
+            <li>Betting is as Texas Hold'em.</li>
+            <li>All bets of the player with the run pool go in there.</li>
+            <li>Once per game, you may switch a hand card with any face-down backup card. (Has a cost if it's your own backup)</li>
+            <li>Burn 1 card face-up before every dealing round to form the burn table.</li>
         </ul>
-        <div class="betting-phase">
-            <h3>Betting phase</h3>
+        <h2>End</h2>
+        <ul>
+            <li>Player with the best 5-card hand using the common table wins the pot.</li>
+            <li>Another player with the best 5-card hand using the burn table wins the run pool.</li>
+        </ul>
+
+    </div>
+    <div class="instructions-bar">
+        <h1>How to play 25</h1>
+        <div class="setup">
+            <h2>Setup</h2>
             <ul>
-                <li>Betting proceeds from dealer's left.</li>
-                <ul>
-                    <li>All bets are placed in front of the player till the end of the betting phase.</li>
-                    <li>The player who has the <i>run pool</i> adds their bets into the <i>run pool</i> instead.</li>
-                </ul>
-                <li>Each player chooses one of the following actions.</li>
-                <ul>
-                    <li>Players may <i>check</i>. This is to add money to the player's bet till it matches the highest bet in this betting phase.</li>
-                    <li>Players may <i>raise</i>. This is to add money to the player's bet such that it increases the current highest bet in this betting phase.</li>
-                    <li>Players may <i>fold</i>. This is to forfeit from the current game. All previous bets up to the point of the <i>fold</i> made by the player remain in-play.</li>
-                </ul>
-                <li>In addition, players may choose to swap 1 <i>card-in-hand</i> with any face-down <i>backup card</i>.</li>
-                <ul>
-                    <li>Each player can only do this swap once per game.</li>
-                    <li>To make the swap:</li>
-                    <ol>
-                        <li>Pick up the desired face-down <i>backup card</i> and peek at the card, without adding to the hand.</li>
-                        <li>Choose 1 card from the 2 <i>cards-in-hand</i> to be replaced by this <i>backup card</i>. Place that card face-up where the <i>backup card</i> originally was.</li>
-                        <li>Add the chosen <i>backup card</i> into the hand. It is now a <i>card-in-hand</i>.</li>
-                    </ol>
-                    <li>If the swapped <i>backup card</i> is the one in front of the swapping player, a payment must be made, which does not add to the highest bet in this betting phase.</li>
-                </ul>
+                <li>Play with a standard 52-card deck. Choose a <i>dealer</i> at the start of the game.</li>
+                <li>Player to the dealer's right gets a container to place their bets into. (<i>Run pool</i>)</li>
+                <li><i>Dealer</i> deals 2 cards face-down into each player's hand. (<i>Cards-in-hand</i>)</li>
                 <li>
-                    Once the bets of all <i>non-folded</i> players are equal, the betting phase ends. The bets of all players (except the player with the <i>run pool</i>) are added to the <i>main pool</i>, in the middle of the table.
+                    <i>Dealer</i> deals 1 extra card to each player, face-down on the table. (<i>Backup card</i>)
+                    <ul><li>Players may peek at their own dealt <i>backup card</i>.</li></ul>
                 </li>
-                <ul><li>If there remains only one <i>non-folded</i> player, the game immediately ends. That player collects the <i>main pool</i>. <h1>We never decided on what happens to the side pool here!</h1></li></ul>
             </ul>
         </div>
-        <div class="dealing-phase">
-            <h3>Dealing phase</h3>
+        <div class="play">
+            <h2>Play</h2>
+            <ul>
+                <li>Play proceeds in 2 alternating phases: betting phase, and dealing phase.</li>
+                <ul><li>The order is as follows: betting phase, dealing phase, betting phase, dealing phase, betting phase, dealing phase, betting phase, end</li></ul>
+            </ul>
+            <div class="betting-phase">
+                <h3>Betting phase</h3>
+                <ul>
+                    <li>Betting proceeds from dealer's left.</li>
+                    <ul>
+                        <li>All bets are placed in front of the player till the end of the betting phase.</li>
+                        <li>The player who has the <i>run pool</i> adds their bets into the <i>run pool</i> instead.</li>
+                    </ul>
+                    <li>Each player chooses one of the following actions.</li>
+                    <ul>
+                        <li>Players may <i>check</i>. This is to add money to the player's bet till it matches the highest bet in this betting phase.</li>
+                        <li>Players may <i>raise</i>. This is to add money to the player's bet such that it increases the current highest bet in this betting phase.</li>
+                        <li>Players may <i>fold</i>. This is to forfeit from the current game. All previous bets up to the point of the <i>fold</i> made by the player remain in-play.</li>
+                    </ul>
+                    <li>In addition, players may choose to swap 1 <i>card-in-hand</i> with any face-down <i>backup card</i>.</li>
+                    <ul>
+                        <li>Each player can only do this swap once per game.</li>
+                        <li>To make the swap:</li>
+                        <ol>
+                            <li>Pick up the desired face-down <i>backup card</i> and peek at the card, without adding to the hand.</li>
+                            <li>Choose 1 card from the 2 <i>cards-in-hand</i> to be replaced by this <i>backup card</i>. Place that card face-up where the <i>backup card</i> originally was.</li>
+                            <li>Add the chosen <i>backup card</i> into the hand. It is now a <i>card-in-hand</i>.</li>
+                        </ol>
+                        <li>If the swapped <i>backup card</i> is the one in front of the swapping player, a payment must be made, which does not add to the highest bet in this betting phase.</li>
+                    </ul>
+                    <li>
+                        Once the bets of all <i>non-folded</i> players are equal, the betting phase ends. The bets of all players (except the player with the <i>run pool</i>) are added to the <i>main pool</i>, in the middle of the table.
+                    </li>
+                    <ul><li>If there remains only one <i>non-folded</i> player, the game immediately ends. That player collects the <i>main pool</i>. <h1>We never decided on what happens to the side pool here!</h1></li></ul>
+                </ul>
+            </div>
+            <div class="dealing-phase">
+                <h3>Dealing phase</h3>
+                <ol>
+                    <li>
+                        On 1st dealing phase, <i>dealer</i> deals 1 card face-up to the <i>burn table</i>, then 3 cards face-up to the <i>common table</i>.
+                    </li>
+                    <li>
+                        On 2nd dealing phase, <i>dealer</i> deals 1 card face-up to the <i>burn table</i>, then 1 card face-up to the <i>common table</i>.
+                    </li>
+                    <li>
+                        On 3rd dealing phase, <i>dealer</i> deals 1 card face-up to the <i>burn table</i>, then 1 card face-up to the <i>common table</i>.
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="end">
+            <h3>End</h3>
             <ol>
-                <li>
-                    On 1st dealing phase, <i>dealer</i> deals 1 card face-up to the <i>burn table</i>, then 3 cards face-up to the <i>common table</i>.
-                </li>
-                <li>
-                    On 2nd dealing phase, <i>dealer</i> deals 1 card face-up to the <i>burn table</i>, then 1 card face-up to the <i>common table</i>.
-                </li>
-                <li>
-                    On 3rd dealing phase, <i>dealer</i> deals 1 card face-up to the <i>burn table</i>, then 1 card face-up to the <i>common table</i>.
-                </li>
+                <li>All <i>non-folded</i> players compare their best hand of 5 cards from their 2 <i>cards-in-hand</i> and the 5 cards in the <i>common table</i>.</li>
+                <ul><li>The player with the best hand wins the <i>main pool</i>.</li></ul>
+                <li>Remaining <i>non-folded</i> players compare their best hand of 5 cards from their 2 <i>cards-in-hand</i> and the 3 cards in the <i>burn table</i>.</li>
+                <ul><li>The player with the best hand wins the <i>run pool</i>.</li></ul>
             </ol>
         </div>
     </div>
-    <div class="end">
-        <h3>End</h3>
-        <ol>
-            <li>All <i>non-folded</i> players compare their best hand of 5 cards from their 2 <i>cards-in-hand</i> and the 5 cards in the <i>common table</i>.</li>
-            <ul><li>The player with the best hand wins the <i>main pool</i>.</li></ul>
-            <li>Remaining <i>non-folded</i> players compare their best hand of 5 cards from their 2 <i>cards-in-hand</i> and the 3 cards in the <i>burn table</i>.</li>
-            <ul><li>The player with the best hand wins the <i>run pool</i>.</li></ul>
-        </ol>
+    <div class="main-screen">
+        <button class="show-quick-instructions">?</button>
     </div>
-</div>
-<script type="module" src="js/unittest.js"></script>
-<script type="module" src="js/main.js"></script>
+    <script type="module" src="js/unittest.js"></script>
+    <script type="module" src="js/main.js"></script>
 </body>
 </html>
