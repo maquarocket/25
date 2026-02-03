@@ -46,6 +46,15 @@ h1 {
     background-color: black;
 }
 
+.start-restart {
+    align-self: center;
+    width: 100%;
+    max-width: 500px;
+    font-size: large;
+    padding: 0.5em 1em;
+    border-radius: 20px;
+}
+
 my-card {
     width: calc(5/7*80px);
     height: 80px;

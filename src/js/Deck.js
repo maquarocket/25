@@ -12,14 +12,10 @@ class Deck extends Object {
     /**
      * Constructor for the class.
      */
-    constructor() {
+    constructor(deck) {
         super();
 
-        for (const s in Suit) {
-            for (const v in Value) {
-                this.#cards.push(new Card(v, s));
-            }
-        }
+        this.#cards = deck;
     }
     
     /**

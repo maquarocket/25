@@ -28,11 +28,20 @@ class Card extends HTMLElement {
         this.#sr = sr;
 
         // Instantiate properties by slots.
-        sr.addEventListener('slotchange', (e) => {
+        // https://stackoverflow.com/questions/4936324/javascript-remove-an-event-listener-from-within-that-listener
+        let self_destruct_listener = (element, eventType, callback) => {
+            let handler = (e) => {
+                callback(e, () => {element.removeEventListener(eventType, handler)});
+            }
+            element.addEventListener(eventType, handler);
+        }
+
+        self_destruct_listener(sr, 'slotchange', (e, closeListener) => {
             let suit = this.innerText.charAt(this.innerText.length - 1);
-            if (suit in Suit) {
+            let value = this.innerText.slice(0, this.innerText.length - 1);
+            if (suit in Suit && value in Value) {
                 this.#suit = suit;
-                this.#value = this.innerText.slice(0, this.innerText.length - 1);
+                this.#value = value;
 
                 if (e.target.getAttribute('name') == 'suit') {
                     if (suit == 'D' || suit == 'H') {
@@ -41,9 +50,10 @@ class Card extends HTMLElement {
                     else {
                         e.target.setAttribute('class', 'black');
                     }
+                    closeListener();
                 }
             }
-        });
+        })
     }
 
     get_value() {
@@ -150,17 +160,22 @@ class Card extends HTMLElement {
 
     flip() {
         let card = this.#sr.getElementById('card');
-        let elems = card.getElementsByTagName('slot');
+        let elems = this.getElementsByTagName('span');
         if (this.#flipped) {
             for (let e of elems) {
-                e.removeAttribute('hidden');
+                if (e.getAttribute('slot') == 'value') {
+                    e.innerText = this.#value;
+                }
+                else if (e.getAttribute('slot') == 'suit') {
+                    e.innerText = this.#suit;
+                }
             }
             card.classList.remove('back');
             this.#flipped = false;
         }
         else {
             for (let e of elems) {
-                e.setAttribute('hidden', '');
+                e.innerText = '';
             }
             card.classList.add('back');
             this.#flipped = true;
