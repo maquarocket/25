@@ -7,6 +7,13 @@
     <title>25</title>
 </head>
 <body>
+    <template id="my-card">
+        <link rel="stylesheet" href="card.css" />
+        <div id="card">
+            <slot name="value"></slot>
+            <slot name="suit"></slot>
+        </div>
+    </template>
     <div class="quick-instructions">
         <h1>Welcome to 25! A variant of Texas Hold'em Poker!</h1>
         <p>Here's a quick guide on how to play:</p>

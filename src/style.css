@@ -1,3 +1,10 @@
+html, body {
+    position: relative;
+    display: contents;
+    margin: 0;
+    min-height: 100%;
+}
+
 h1 {
     text-align: center;
 }
@@ -25,6 +32,8 @@ h1 {
     font-size: large;
     padding: 0.1em 0.5em;
     border-radius: 20px;
+    display: block;
+    margin: 10px 0;
 }
 
 .instructions-bar {
@@ -35,4 +44,12 @@ h1 {
     width: 100%;
     height: 100%;
     background-color: black;
+}
+
+my-card {
+    width: calc(5/7*80px);
+    height: 80px;
+    border: 2px solid black;
+    border-radius: 5px;
+    display: inline-block;
 }

@@ -5,9 +5,11 @@ import Value from "./Value.js";
 /**
  * Represents playing cards of a standard 52-card deck.
  */
-class Card extends Object {
+class Card extends HTMLElement {
     #value;
     #suit;
+    #flipped = false;
+    #sr;
 
     /**
      * Constructor for the class.
@@ -19,6 +21,29 @@ class Card extends Object {
 
         this.#value = value;
         this.#suit = suit;
+
+        let template = document.getElementById('my-card');
+        const sr = this.attachShadow({mode:'open'});
+        sr.appendChild(document.importNode(template.content, true));
+        this.#sr = sr;
+
+        // Instantiate properties by slots.
+        sr.addEventListener('slotchange', (e) => {
+            let suit = this.innerText.charAt(this.innerText.length - 1);
+            if (suit in Suit) {
+                this.#suit = suit;
+                this.#value = this.innerText.slice(0, this.innerText.length - 1);
+
+                if (e.target.getAttribute('name') == 'suit') {
+                    if (suit == 'D' || suit == 'H') {
+                        e.target.setAttribute('class', 'red');
+                    }
+                    else {
+                        e.target.setAttribute('class', 'black');
+                    }
+                }
+            }
+        });
     }
 
     get_value() {
@@ -118,8 +143,31 @@ class Card extends Object {
     ne_suit(other) {
         return this.#suit != other.#suit;
     }
+
+    is_flipped() {
+        return this.#flipped;
+    }
+
+    flip() {
+        let card = this.#sr.getElementById('card');
+        let elems = card.getElementsByTagName('slot');
+        if (this.#flipped) {
+            for (let e of elems) {
+                e.removeAttribute('hidden');
+            }
+            card.classList.remove('back');
+            this.#flipped = false;
+        }
+        else {
+            for (let e of elems) {
+                e.setAttribute('hidden', '');
+            }
+            card.classList.add('back');
+            this.#flipped = true;
+        }
+    }
 }
 
 
-
+customElements.define('my-card', Card);
 export default Card;

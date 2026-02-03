@@ -13,6 +13,7 @@ let esCard = new Card(Value[7], Suit.H);
 
 
 console.log(myCard);
+console.log(myCard.get_suit);
 // Testing equal function.
 console.assert(myCard.eq(myCard));
 console.assert(myCard.eq(eqCard));
