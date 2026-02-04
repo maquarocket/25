@@ -55,6 +55,19 @@ h1 {
     border-radius: 20px;
 }
 
+.header-content, .player-counts {
+    margin: 10px 10px;
+}
+
+.hand {
+    max-width: 100%;
+    height: calc(80px + 5px + 3em); /* Card height + padding + text?*/
+    border: 5px solid black;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 5px;
+}
+
 my-card {
     width: calc(5/7*80px);
     height: 80px;
