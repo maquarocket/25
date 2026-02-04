@@ -112,13 +112,25 @@ button.move {
     grid-row: 1 / 3;
 }
 
-.hand {
+.hand, .community-hand {
     max-width: 100%;
     height: calc(80px + 5px + 3em); /* Card height + padding + text?*/
     border: 5px solid black;
     border-radius: 5px;
     margin: 5px;
     padding: 5px;
+}
+
+.community-hand {
+    border-style: dashed;
+}
+
+.community-hand.main {
+    border-color: green;
+}
+
+.community-hand.burn {
+    border-color: red;
 }
 
 my-card {

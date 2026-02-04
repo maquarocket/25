@@ -54,21 +54,23 @@ function make_hand(playerName) {
 }
 // Setting up the play area with players.
 let players = document.getElementById('players-input');
+function get_playersInput() {return parseInt(players.value)};  // Somehow the input might return as string without this parsing.
 players.addEventListener('input', (e) => {
     if (e.target.value <= 14 && e.target.value > 0) {
         if (!started()) {
             let hands = target.querySelectorAll('.hand');
-            for (let hand of hands) {
-                target.removeChild(hand);
+            // Skips 1 count for the hard-coded 'you' player.
+            for (let i = 1; i < hands.length; i++) {
+                target.removeChild(hands[i]);
             }
-            for (let i = 0; i < e.target.value; i++) {
+            for (let i = 1; i < e.target.value; i++) {
                 let hand = make_hand('Player '.concat(i+1));
                 target.appendChild(hand);
             }
         }
         else {
             let current = game.get_playerCount();
-            if (e.target.value >= current) {
+            if (parseInt(e.target.value) >= parseInt(current)) {
                 let hands = target.querySelectorAll('.hand');
                 for (let i = current; i < hands.length; i++) {
                     target.removeChild(hands[[i]]);
@@ -95,19 +97,13 @@ startRestart.addEventListener('click', () => {
             }
         }
         let current = game.get_playerCount();
-        if (players.value < current) {
+        if (get_playersInput() < current) {
             hands = target.querySelectorAll('.hand');
-            for (let i = players.value; i < hands.length; i++) {
+            for (let i = get_playersInput(); i < hands.length; i++) {
                 target.removeChild(hands[[i]]);
             }
         }
-        game = new Game(players.value);
-        // let cards = target.querySelectorAll('my-card');
-        // let len = cards.length;
-        // for (let i = len - 1; i >= 0; i--) {
-        //     target.removeChild(cards[i]);
-        //     deck.push(cards[i]);
-        // }
+        game = new Game(get_playersInput());
         deck.shuffle();
         hands = document.querySelectorAll('.hand');
         for (let hand of hands) {
@@ -115,21 +111,17 @@ startRestart.addEventListener('click', () => {
                 hand.appendChild(deck.draw());
             }
         }
-        // len = deck.count();
-        // for (let i = 0; i < len; i++) {
-        //     target.appendChild(deck.draw());
-        // }
     }
     else {
         let hands = target.querySelectorAll('.hand');
-        if (hands.length == 0) {
-            for (let i = 0; i < players.value; i++) {
+        if (hands.length != get_playersInput()) {
+            for (let i = hands.length; i < get_playersInput(); i++) {
                 let name = (parseInt(i) + 1).toString();
                 let hand = make_hand('Player '.concat(name));
                 target.appendChild(hand);
             }
         }
-        game = new Game(players.value);
+        game = new Game(get_playersInput());
         deck.shuffle();
         hands = document.querySelectorAll('.hand');
         for (let hand of hands) {
@@ -137,10 +129,6 @@ startRestart.addEventListener('click', () => {
                 hand.appendChild(deck.draw());
             }
         }
-        // let len = deck.count();
-        // for (let i = 0; i < len; i++) {
-        //     target.appendChild(deck.draw());
-        // }
         startRestart.innerText = 'Restart Game';
     }
 });
