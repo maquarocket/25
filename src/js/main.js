@@ -31,6 +31,14 @@ let game;
 let target = document.getElementsByClassName('play-area')[0];
 let startRestart = document.querySelector('.start-restart');
 function started() {return typeof game !== 'undefined'};
+function make_hand(playerName) {
+    let hand = document.createElement('div');
+    hand.classList.add('hand');
+    let name = document.createElement('p');
+    name.innerText = playerName;
+    hand.appendChild(name);
+    return hand;
+}
 // Setting up the play area with players.
 let players = document.getElementById('players-input');
 players.addEventListener('input', (e) => {
@@ -41,8 +49,7 @@ players.addEventListener('input', (e) => {
                 target.removeChild(hand);
             }
             for (let i = 0; i < e.target.value; i++) {
-                let hand = document.createElement('div');
-                hand.classList.add('hand');
+                let hand = make_hand('Player '.concat(i+1));
                 target.appendChild(hand);
             }
         }
@@ -54,8 +61,8 @@ players.addEventListener('input', (e) => {
                     target.removeChild(hands[[i]]);
                 }
                 for (let i = current; i < e.target.value; i++) {
-                    let hand = document.createElement('div');
-                    hand.classList.add('hand');
+                    let name = (parseInt(i) + 1).toString();
+                    let hand = make_hand('Player '.concat(name));
                     target.appendChild(hand);
                 }
             }
@@ -66,41 +73,61 @@ players.addEventListener('input', (e) => {
 // Dealing cards.
 startRestart.addEventListener('click', () => {
     if (started()) {
+        let hands = target.querySelectorAll('.hand');
+        for (let hand of hands) {
+            let cards = hand.querySelectorAll('my-card');
+            for (let card of cards) {
+                hand.removeChild(card);
+                deck.push(card);
+            }
+        }
         let current = game.get_playerCount();
         if (players.value < current) {
-            let hands = target.querySelectorAll('.hand');
+            hands = target.querySelectorAll('.hand');
             for (let i = players.value; i < hands.length; i++) {
                 target.removeChild(hands[[i]]);
             }
         }
         game = new Game(players.value);
-        let cards = target.querySelectorAll('my-card');
-        let len = cards.length;
-        for (let i = len - 1; i >= 0; i--) {
-            target.removeChild(cards[i]);
-            deck.push(cards[i]);
-        }
+        // let cards = target.querySelectorAll('my-card');
+        // let len = cards.length;
+        // for (let i = len - 1; i >= 0; i--) {
+        //     target.removeChild(cards[i]);
+        //     deck.push(cards[i]);
+        // }
         deck.shuffle();
-        len = deck.count();
-        for (let i = 0; i < len; i++) {
-            target.appendChild(deck.draw());
+        hands = document.querySelectorAll('.hand');
+        for (let hand of hands) {
+            for (let i = 0; i < 2; i++) {
+                hand.appendChild(deck.draw());
+            }
         }
+        // len = deck.count();
+        // for (let i = 0; i < len; i++) {
+        //     target.appendChild(deck.draw());
+        // }
     }
     else {
         let hands = target.querySelectorAll('.hand');
         if (hands.length == 0) {
             for (let i = 0; i < players.value; i++) {
-                let hand = document.createElement('div');
-                hand.classList.add('hand');
+                let name = (parseInt(i) + 1).toString();
+                let hand = make_hand('Player '.concat(name));
                 target.appendChild(hand);
             }
         }
         game = new Game(players.value);
         deck.shuffle();
-        let len = deck.count();
-        for (let i = 0; i < len; i++) {
-            target.appendChild(deck.draw());
+        hands = document.querySelectorAll('.hand');
+        for (let hand of hands) {
+            for (let i = 0; i < 2; i++) {
+                hand.appendChild(deck.draw());
+            }
         }
+        // let len = deck.count();
+        // for (let i = 0; i < len; i++) {
+        //     target.appendChild(deck.draw());
+        // }
         startRestart.innerText = 'Restart Game';
     }
 });
