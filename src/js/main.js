@@ -9,6 +9,19 @@ import Game from "./Game.js";
 document.querySelector('.hide-quick-instructions').addEventListener('click', () => {document.querySelector('.quick-instructions').setAttribute('hidden', '')});
 document.querySelector('.show-quick-instructions').addEventListener('click', () => {document.querySelector('.quick-instructions').removeAttribute('hidden')});
 
+// Handling raise options.
+let raiseValue = document.getElementById('raise-value');
+document.querySelector('.increase-raise').addEventListener('click', () => {
+    if (raiseValue.value < 50) {
+        raiseValue.value = parseInt(raiseValue.value) + 10;
+    }
+})
+document.querySelector('.decrease-raise').addEventListener('click', () => {
+    if (raiseValue.value > 10) {
+        raiseValue.value = parseInt(raiseValue.value) - 10;
+    }
+})
+
 // Creating a deck of cards.
 let deck = [];
 for (let val in Value) {
