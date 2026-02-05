@@ -115,7 +115,7 @@ button.move {
     grid-row: 1 / 3;
 }
 
-.hand, .community-hand {
+.player, .community-hand {
     max-width: 100%;
     height: calc(80px + 5px + 3em); /* Card height + padding + text?*/
     border: 5px solid black;
@@ -136,7 +136,7 @@ button.move {
     border-color: red;
 }
 
-.nameplate {
+.nameplate, .card-area {
     display: flex;
     justify-content: space-between;
 }

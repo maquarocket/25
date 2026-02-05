@@ -45,18 +45,27 @@ let target = document.getElementsByClassName('play-area')[0];
 let startRestart = document.querySelector('.start-restart');
 function started() {return typeof game !== 'undefined'};
 function make_hand(playerName) {
-    let hand = document.createElement('div');
-    hand.classList.add('hand');
+    let player = document.createElement('div');
+    player.classList.add('player');
     let nameplate = document.createElement('div');
     nameplate.classList.add('nameplate');
-    hand.appendChild(nameplate);
+    player.appendChild(nameplate);
     let name = document.createElement('p');
     name.innerText = playerName;
     nameplate.appendChild(name);
     let amount = document.createElement('p');
     amount.innerText = '$1000';
     nameplate.appendChild(amount);
-    return hand;
+    let cardArea = document.createElement('div');
+    cardArea.classList.add('card-area');
+    player.appendChild(cardArea);
+    let hand = document.createElement('div');
+    hand.classList.add('hand');
+    cardArea.appendChild(hand);
+    let backup = document.createElement('div');
+    backup.classList.add('backup');
+    cardArea.appendChild(backup);
+    return player;
 }
 // Setting up the play area with players.
 let players = document.getElementById('players-input');
@@ -64,27 +73,27 @@ function get_playersInput() {return parseInt(players.value)};  // Somehow the in
 players.addEventListener('input', (e) => {
     if (e.target.value <= 14 && e.target.value > 0) {
         if (!started()) {
-            let hands = target.querySelectorAll('.hand');
+            let hands = target.querySelectorAll('.player');
             // Skips 1 count for the hard-coded 'you' player.
             for (let i = 1; i < hands.length; i++) {
                 target.removeChild(hands[i]);
             }
             for (let i = 1; i < e.target.value; i++) {
-                let hand = make_hand('Player '.concat(i+1));
-                target.appendChild(hand);
+                let player = make_hand('Player '.concat(i+1));
+                target.appendChild(player);
             }
         }
         else {
             let current = game.get_playerCount();
             if (parseInt(e.target.value) >= parseInt(current)) {
-                let hands = target.querySelectorAll('.hand');
+                let hands = target.querySelectorAll('.player');
                 for (let i = current; i < hands.length; i++) {
                     target.removeChild(hands[[i]]);
                 }
                 for (let i = current; i < e.target.value; i++) {
                     let name = (parseInt(i) + 1).toString();
-                    let hand = make_hand('Player '.concat(name));
-                    target.appendChild(hand);
+                    let player = make_hand('Player '.concat(name));
+                    target.appendChild(player);
                 }
             }
         }
@@ -94,9 +103,9 @@ players.addEventListener('input', (e) => {
 let showBox = document.getElementById('show-all-cards');
 // Handle card flipping.
 function show_cards(toShow) {
-    let AIhands = Array.from(document.querySelectorAll('.hand')).slice(1);
-    for (let hand of AIhands) {
-        let cards = hand.querySelectorAll('my-card');
+    let AIhands = Array.from(document.querySelectorAll('.player')).slice(1);
+    for (let player of AIhands) {
+        let cards = player.querySelectorAll('my-card');
         for (let card of cards) {
             if (card.is_flipped() == toShow) {
                 card.flip();
@@ -108,20 +117,20 @@ showBox.addEventListener('input', (e) => {show_cards(e.target.checked)});
 
 // Dealing cards.
 startRestart.addEventListener('click', () => {
-    let hands = target.querySelectorAll('.hand');
+    let hands = target.querySelectorAll('.player');
     if (started()) {
         // Retrieving cards.
-        for (let hand of hands) {
-            let cards = hand.querySelectorAll('my-card');
+        for (let player of hands) {
+            let cards = player.querySelectorAll('my-card');
             for (let card of cards) {
-                hand.removeChild(card);
+                player.removeChild(card);
                 if (card.is_flipped()) card.flip();
                 deck.push(card);
             }
         }
         let current = game.get_playerCount();
         if (get_playersInput() < current) {
-            hands = target.querySelectorAll('.hand');
+            hands = target.querySelectorAll('.player');
             for (let i = get_playersInput(); i < hands.length; i++) {
                 target.removeChild(hands[[i]]);
             }
@@ -131,8 +140,8 @@ startRestart.addEventListener('click', () => {
         if (hands.length != get_playersInput()) {
             for (let i = hands.length; i < get_playersInput(); i++) {
                 let name = (parseInt(i) + 1).toString();
-                let hand = make_hand('Player '.concat(name));
-                target.appendChild(hand);
+                let player = make_hand('Player '.concat(name));
+                target.appendChild(player);
             }
         }
         startRestart.innerText = 'Restart Game';
@@ -140,11 +149,14 @@ startRestart.addEventListener('click', () => {
     // Actually dealing the cards.
     game = new Game(get_playersInput());
     deck.shuffle();
-    hands = document.querySelectorAll('.hand');
-    for (let hand of hands) {
+    hands = document.querySelectorAll('.player');
+    for (let player of hands) {
         for (let i = 0; i < 2; i++) {
-            hand.appendChild(deck.draw());
+            player.querySelector('.hand').appendChild(deck.draw());
         }
+        let backupCard = deck.draw();
+        backupCard.shadowRoot.getElementById('card').classList.add('half');
+        player.querySelector('.backup').appendChild(backupCard);
     }
     show_cards(showBox.checked);
 });

@@ -188,6 +188,15 @@ class Card extends HTMLElement {
             this.#flipped = true;
         }
     }
+
+    // display_half(bool) {
+    //     if (bool) {
+    //         this.#sr.getElementById('card').classList.add('half');
+    //     }
+    //     else {
+    //         this.#sr.getElementById('card').classList.remove('half');
+    //     }
+    // }
 }
 
 
