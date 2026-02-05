@@ -6,17 +6,25 @@ import Card from "./Card.js";
 /**
  * Represents a collection of Cards.
  */
-class Hand extends Object {
+class Player extends Object {
     #hand = [];
+    #backup;
+    #money = 0;
+    #ui;
 
     /**
      * Constructor for the class.
-     * @param {[Card]} cards - Array of cards. Can be empty list.
+     * @param {[Card]} cards - Array of cards. Can be empty list. 
+     * @param {Card} backup - Backup card for the player.
+     * @param {Number} money - Amount of money to start with.
      */
-    constructor(cards) {
+    constructor(cards, backup, money, uiElement) {
         super();
 
         this.#hand = cards;
+        this.#backup = backup;
+        this.#money = money;
+        this.#ui = uiElement;
     }
 
     /**
@@ -27,15 +35,24 @@ class Hand extends Object {
         this.#hand.push(card);
     }
 
-    evaluate() {
+    /**
+     * Gets all the Cards in the hand (not including backup card).
+     * @returns - Array of Cards.
+     */
+    get_cards() {
+        return this.#hand;
+    }
+
+    evaluate(commonCards) {
         let score = []; // Format: [type of hand, tiebreakers]
         // Sort hand first via buckets.
         let buckets = [];
         for (const e in Value) {buckets.push([])};
         this.#hand.forEach(card => {buckets[card.get_value()].push(card)});
+        commonCards.forEach(card => {buckets[card.get_value()].push(card)});
 
         // Search for straights.
-        if (this.#hand.length >= 5) {
+        if (this.#hand.length + commonCards.length >= 5) {
             for (let i = buckets.length - 1; i >= 3; i--) {
                 if (buckets[i].length > 0) {
                     if (buckets.at(i-1).length > 0 && buckets.at(i-2).length > 0 && buckets.at(i-3).length > 0 && buckets.at(i-4).length > 0) {
@@ -192,4 +209,4 @@ class Hand extends Object {
 }
 
 
-export default Hand;
+export default Player;

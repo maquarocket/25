@@ -2,7 +2,7 @@ import Card from "./Card.js";
 import Suit from "./Suit.js";
 import Value from "./Value.js";
 import Deck from "./Deck.js";
-import Hand from "./Hand.js";
+import Player from "./Player.js";
 import Game from "./Game.js";
 
 // Handing quick instructions.
@@ -51,9 +51,11 @@ function make_hand(playerName) {
     nameplate.classList.add('nameplate');
     player.appendChild(nameplate);
     let name = document.createElement('p');
+    name.classList.add('player-name');
     name.innerText = playerName;
     nameplate.appendChild(name);
     let amount = document.createElement('p');
+    amount.classList.add('player-money');
     amount.innerText = '$1000';
     nameplate.appendChild(amount);
     let cardArea = document.createElement('div');
@@ -147,7 +149,6 @@ startRestart.addEventListener('click', () => {
         startRestart.innerText = 'Restart Game';
     }
     // Actually dealing the cards.
-    game = new Game(get_playersInput());
     deck.shuffle();
     hands = document.querySelectorAll('.player');
     for (let player of hands) {
@@ -159,4 +160,5 @@ startRestart.addEventListener('click', () => {
         player.querySelector('.backup').appendChild(backupCard);
     }
     show_cards(showBox.checked);
+    game = new Game(get_playersInput());
 });

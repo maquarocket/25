@@ -1,7 +1,7 @@
 import Card from "./Card.js";
 import Suit from "./Suit.js";
 import Value from "./Value.js";
-import Hand from "./Hand.js";
+import Player from "./Player.js";
 
 
 let myCard = new Card(Value.K, Suit.H);
@@ -77,50 +77,50 @@ console.assert(myCard.ge(ltCard));
 // let hand = new Hand([myCard, gtCard]);
 // hand.add_card(eqCard);
 // hand.add_card(ltCard);
-// hand.evaluate();
+// hand.evaluate([]);
 
 function nc(val, suit) {
     return new Card(Value[val], Suit[suit]);
 }
 let evl;
-let royalflush = new Hand([nc('10', 'C'), nc('K', 'C'), nc('9', 'C'), nc('9', 'C'), nc('J', 'C'), nc('A', 'C'), nc('Q', 'C')]);
-evl = royalflush.evaluate();
+let royalflush = new Player([nc('10', 'C'), nc('K', 'C'), nc('9', 'C'), nc('9', 'C'), nc('J', 'C'), nc('A', 'C'), nc('Q', 'C')]);
+evl = royalflush.evaluate([]);
 console.assert(evl[0] == 9 && evl[1].length == 1 && evl[1][0] == Value.A);
 
-let straightflush = new Hand([nc('9', 'H'), nc('8', 'H'), nc('4', 'H'), nc('9', 'D'), nc('6', 'H'), nc('5', 'H'), nc('7', 'H')]);
-evl = straightflush.evaluate();
+let straightflush = new Player([nc('9', 'H'), nc('8', 'H'), nc('4', 'H'), nc('9', 'D'), nc('6', 'H'), nc('5', 'H'), nc('7', 'H')]);
+evl = straightflush.evaluate([]);
 console.assert(evl[0] == 8 && evl[1].length == 1 && evl[1][0] == Value[9]);
 
-let fourofakind = new Hand([nc('2', 'S'), nc('2', 'H'), nc('J', 'D'), nc('J', 'C'), nc('2', 'D'), nc('2', 'H')]);
-evl = fourofakind.evaluate();
+let fourofakind = new Player([nc('2', 'S'), nc('2', 'H'), nc('J', 'D'), nc('J', 'C'), nc('2', 'D'), nc('2', 'H')]);
+evl = fourofakind.evaluate([]);
 console.assert(evl[0] == 7 && evl[1].length == 2 && evl[1][0] == Value[2] && evl[1][1] == Value.J);
 
-let fullhouse = new Hand([nc('2', 'H'), nc('4', 'S'), nc('2', 'S'), nc('3', 'S'), nc('2', 'S'), nc('4', 'S')]);
-evl = fullhouse.evaluate();
+let fullhouse = new Player([nc('2', 'H'), nc('4', 'S'), nc('2', 'S'), nc('3', 'S'), nc('2', 'S'), nc('4', 'S')]);
+evl = fullhouse.evaluate([]);
 console.assert(evl[0] == 6 && evl[1].length == 2 && evl[1][0] == Value[2] && evl[1][1] == Value[4]);
 
-let flush = new Hand([nc('3', 'D'), nc('7', 'D'), nc('2', 'D'), nc('8', 'C'), nc('8', 'D'), nc('5', 'D'), nc('4', 'D')]);
-evl = flush.evaluate();
+let flush = new Player([nc('3', 'D'), nc('7', 'D'), nc('2', 'D'), nc('8', 'C'), nc('8', 'D'), nc('5', 'D'), nc('4', 'D')]);
+evl = flush.evaluate([]);
 console.assert(evl[0] == 5 && evl[1].length == 5 && evl[1][0] == Value[8] && evl[1][1] == Value[7] && evl[1][2] == Value[5] && evl[1][3] == Value[4] && evl[1][4] == Value[3]);
 
-let straight = new Hand([nc('A', 'H'), nc('5', 'C'), nc('3', 'D'), nc('K', 'C'), nc('2', 'S'), nc('4', 'C'), nc('Q', 'H')]);
-evl = straight.evaluate();
+let straight = new Player([nc('A', 'H'), nc('5', 'C'), nc('3', 'D'), nc('K', 'C'), nc('2', 'S'), nc('4', 'C'), nc('Q', 'H')]);
+evl = straight.evaluate([]);
 console.assert(evl[0] == 4 && evl[1].length == 1 && evl[1][0] == Value[5]);
 
-let threeofakind = new Hand([nc('7', 'H'), nc('2', 'C'), nc('5', 'S'), nc('7', 'C'), nc('Q', 'D'), nc('7', 'D'), nc('3', 'H')]);
-evl = threeofakind.evaluate();
+let threeofakind = new Player([nc('7', 'H'), nc('2', 'C'), nc('5', 'S'), nc('7', 'C'), nc('Q', 'D'), nc('7', 'D'), nc('3', 'H')]);
+evl = threeofakind.evaluate([]);
 console.assert(evl[0] == 3 && evl[1].length == 3 && evl[1][0] == Value[7] && evl[1][1] == Value.Q && evl[1][2] == Value[5]);
 
-let twopair = new Hand([nc('A', 'D'), nc('4', 'H'), nc('K', 'D'), nc('2', 'C'), nc('3', 'S'), nc('A', 'S'), nc('4', 'S')]);
-evl = twopair.evaluate();
+let twopair = new Player([nc('A', 'D'), nc('4', 'H'), nc('K', 'D'), nc('2', 'C'), nc('3', 'S'), nc('A', 'S'), nc('4', 'S')]);
+evl = twopair.evaluate([]);
 console.assert(evl[0] == 2 && evl[1].length == 3 && evl[1][0] == Value.A && evl[1][1] == Value[4] && evl[1][2] == Value.K);
 
-let pair = new Hand([nc('9', 'S'), nc('2', 'C'), nc('K', 'C'), nc('5', 'H'), nc('9', 'D'), nc('8', 'C'), nc('3', 'C')]);
-evl = pair.evaluate();
+let pair = new Player([nc('9', 'S'), nc('2', 'C'), nc('K', 'C'), nc('5', 'H'), nc('9', 'D'), nc('8', 'C'), nc('3', 'C')]);
+evl = pair.evaluate([]);
 console.assert(evl[0] == 1 && evl[1].length == 4 && evl[1][0] == Value[9] && evl[1][1] == Value.K && evl[1][2] == Value[8] && evl[1][3] == Value[5]);
 
-let highcard = new Hand([nc('2', 'H'), nc('3', 'H'), nc('A', 'D'), nc('4', 'H'), nc('K', 'C'), nc('J', 'S'), nc('Q', 'S')]);
-evl = highcard.evaluate();
+let highcard = new Player([nc('2', 'H'), nc('3', 'H'), nc('A', 'D'), nc('4', 'H'), nc('K', 'C'), nc('J', 'S'), nc('Q', 'S')]);
+evl = highcard.evaluate([]);
 console.assert(evl[0] == 0 && evl[1].length == 5 && evl[1][0] == Value.A && evl[1][1] == Value.K && evl[1][2] == Value.Q && evl[1][3] == Value.J && evl[1][4] == Value[4]);
 
 
