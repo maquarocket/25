@@ -85,14 +85,31 @@ players.addEventListener('input', (e) => {
     }
 });
 
+let showBox = document.getElementById('show-all-cards');
+// Handle card flipping.
+function show_cards(toShow) {
+    let AIhands = Array.from(document.querySelectorAll('.hand')).slice(1);
+    for (let hand of AIhands) {
+        let cards = hand.querySelectorAll('my-card');
+        for (let card of cards) {
+            if (card.is_flipped() == toShow) {
+                card.flip();
+            }
+        }
+    }
+}
+showBox.addEventListener('input', (e) => {show_cards(e.target.checked)});
+
 // Dealing cards.
 startRestart.addEventListener('click', () => {
     let hands = target.querySelectorAll('.hand');
     if (started()) {
+        // Retrieving cards.
         for (let hand of hands) {
             let cards = hand.querySelectorAll('my-card');
             for (let card of cards) {
                 hand.removeChild(card);
+                if (card.is_flipped()) card.flip();
                 deck.push(card);
             }
         }
@@ -123,4 +140,5 @@ startRestart.addEventListener('click', () => {
             hand.appendChild(deck.draw());
         }
     }
+    show_cards(showBox.checked);
 });

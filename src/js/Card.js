@@ -154,10 +154,17 @@ class Card extends HTMLElement {
         return this.#suit != other.#suit;
     }
 
+    /**
+     * Returns whether or not the card has its back shown.
+     * @returns - Boolean.
+     */
     is_flipped() {
         return this.#flipped;
     }
 
+    /**
+     * Alternates the displayed side of the card.
+     */
     flip() {
         let card = this.#sr.getElementById('card');
         let elems = this.getElementsByTagName('span');
