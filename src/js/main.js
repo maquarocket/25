@@ -47,9 +47,15 @@ function started() {return typeof game !== 'undefined'};
 function make_hand(playerName) {
     let hand = document.createElement('div');
     hand.classList.add('hand');
+    let nameplate = document.createElement('div');
+    nameplate.classList.add('nameplate');
+    hand.appendChild(nameplate);
     let name = document.createElement('p');
     name.innerText = playerName;
-    hand.appendChild(name);
+    nameplate.appendChild(name);
+    let amount = document.createElement('p');
+    amount.innerText = '$1000';
+    nameplate.appendChild(amount);
     return hand;
 }
 // Setting up the play area with players.
