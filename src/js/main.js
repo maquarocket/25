@@ -87,8 +87,8 @@ players.addEventListener('input', (e) => {
 
 // Dealing cards.
 startRestart.addEventListener('click', () => {
+    let hands = target.querySelectorAll('.hand');
     if (started()) {
-        let hands = target.querySelectorAll('.hand');
         for (let hand of hands) {
             let cards = hand.querySelectorAll('my-card');
             for (let card of cards) {
@@ -103,17 +103,8 @@ startRestart.addEventListener('click', () => {
                 target.removeChild(hands[[i]]);
             }
         }
-        game = new Game(get_playersInput());
-        deck.shuffle();
-        hands = document.querySelectorAll('.hand');
-        for (let hand of hands) {
-            for (let i = 0; i < 2; i++) {
-                hand.appendChild(deck.draw());
-            }
-        }
     }
     else {
-        let hands = target.querySelectorAll('.hand');
         if (hands.length != get_playersInput()) {
             for (let i = hands.length; i < get_playersInput(); i++) {
                 let name = (parseInt(i) + 1).toString();
@@ -121,14 +112,15 @@ startRestart.addEventListener('click', () => {
                 target.appendChild(hand);
             }
         }
-        game = new Game(get_playersInput());
-        deck.shuffle();
-        hands = document.querySelectorAll('.hand');
-        for (let hand of hands) {
-            for (let i = 0; i < 2; i++) {
-                hand.appendChild(deck.draw());
-            }
-        }
         startRestart.innerText = 'Restart Game';
+    }
+    // Actually dealing the cards.
+    game = new Game(get_playersInput());
+    deck.shuffle();
+    hands = document.querySelectorAll('.hand');
+    for (let hand of hands) {
+        for (let i = 0; i < 2; i++) {
+            hand.appendChild(deck.draw());
+        }
     }
 });
