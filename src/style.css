@@ -141,6 +141,10 @@ button.move {
     justify-content: space-between;
 }
 
+.community-hand > .card-area {
+    justify-content: space-evenly;
+}
+
 .nameplate > * {
     width: fit-content;
     max-width: 50%;

@@ -160,5 +160,5 @@ startRestart.addEventListener('click', () => {
         player.querySelector('.backup').appendChild(backupCard);
     }
     show_cards(showBox.checked);
-    game = new Game(get_playersInput());
+    game = new Game(get_playersInput(), deck);
 });
