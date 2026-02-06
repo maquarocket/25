@@ -67,6 +67,9 @@ function make_hand(playerName) {
     let backup = document.createElement('div');
     backup.classList.add('backup');
     cardArea.appendChild(backup);
+    let results = document.createElement('div');
+    results.classList.add('results');
+    player.appendChild(results);
     return player;
 }
 // Setting up the play area with players.
@@ -121,12 +124,24 @@ showBox.addEventListener('input', (e) => {show_cards(e.target.checked)});
 startRestart.addEventListener('click', () => {
     let hands = target.querySelectorAll('.player');
     if (started()) {
+        game.clean_up();
         // Retrieving cards.
         for (let player of hands) {
             let cards = player.querySelectorAll('my-card');
             for (let card of cards) {
-                player.removeChild(card);
+                card.remove();
                 if (card.is_flipped()) card.flip();
+                card.display_half(false);
+                deck.push(card);
+            }
+        }
+        let table = document.querySelectorAll('.community-hand');
+        for (let t of table) {
+            let cards = t.querySelectorAll('my-card');
+            for (let card of cards) {
+                card.remove();
+                if (card.is_flipped()) card.flip();
+                card.display_half(false);
                 deck.push(card);
             }
         }
@@ -150,6 +165,7 @@ startRestart.addEventListener('click', () => {
     }
     // Actually dealing the cards.
     deck.shuffle();
+    console.log(deck.count());
     hands = document.querySelectorAll('.player');
     for (let player of hands) {
         for (let i = 0; i < 2; i++) {

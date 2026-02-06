@@ -17,6 +17,18 @@ const Value = Object.freeze({
     A : 12
 });
 
+export const get_card_key = (value) => {
+    let ans;
+    for (let key in Value) {
+        if (Value[key] == value) {
+            ans = key;
+            break;
+        }
+    }
+    if (ans) return ans;
+    else throw EvalError('Given value is out of bounds.');
+}
+
 
 
 export default Value;

@@ -189,14 +189,14 @@ class Card extends HTMLElement {
         }
     }
 
-    // display_half(bool) {
-    //     if (bool) {
-    //         this.#sr.getElementById('card').classList.add('half');
-    //     }
-    //     else {
-    //         this.#sr.getElementById('card').classList.remove('half');
-    //     }
-    // }
+    display_half(bool) {
+        if (bool) {
+            this.#sr.getElementById('card').classList.add('half');
+        }
+        else {
+            this.#sr.getElementById('card').classList.remove('half');
+        }
+    }
 }
 
 

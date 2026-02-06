@@ -12,9 +12,10 @@ class Game extends Object {
     #bowlPlayer = 0;
     #mainTable;
     #burnTable;
-    #playTurn = 0;
+    #playTurn;
 
     #movesUI;
+    fn_call;
 
     /**
      * Initialises a game of 25.
@@ -40,10 +41,11 @@ class Game extends Object {
             temp.push(player);
         }
         this.#players = temp;
-        console.log(this.#players);
+        this.#playTurn = 0;
 
         this.#movesUI = document.querySelector('.moves-area');
-        this.#movesUI.querySelector('.call').addEventListener('click', () => {this.play()});
+        this.fn_call = () => {this.play()};
+        this.#movesUI.querySelector('.call').addEventListener('click', this.fn_call);
     }
 
     /**
@@ -66,7 +68,22 @@ class Game extends Object {
             this.#playTurn += 1;
         }
         else if (this.#playTurn == 3) {
-            // results time!
+            let main = Array.from(this.#mainTable.querySelectorAll('my-card'));
+            // Open all non-folded cards.
+            for (let i = 0; i < this.#players.length; i++) {
+                let p = this.#players[i];
+                if (!this.#folded[i]) {
+                    for (let c of p.get_cards()) {
+                        if (c.is_flipped()) {
+                            c.flip();
+                        }
+                    }
+                    // if (p.get_backup().is_flipped()) p.get_backup().flip();
+                }
+                let score = p.evaluate(main);
+                p.ui.querySelector('.results').innerText = score.print();
+            }
+            this.#playTurn += 1;
         }
     }
 
@@ -74,6 +91,10 @@ class Game extends Object {
      * Terminates a game
      */
     clean_up() {
+        this.#movesUI.querySelector('.call').removeEventListener('click', this.fn_call);
+        for (let p of this.#players) {
+            p.ui.querySelector('.results').innerText = "";
+        }
     }
 }
 

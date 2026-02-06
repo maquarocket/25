@@ -1,6 +1,7 @@
 import Value from "./Value.js";
 import Suit from "./Suit.js";
 import Card from "./Card.js";
+import Score from "./Score.js";
 
 
 /**
@@ -10,7 +11,7 @@ class Player extends Object {
     #hand = [];
     #backup;
     #money = 0;
-    #ui;
+    ui;
 
     /**
      * Constructor for the class.
@@ -24,7 +25,7 @@ class Player extends Object {
         this.#hand = cards;
         this.#backup = backup;
         this.#money = money;
-        this.#ui = uiElement;
+        this.ui = uiElement;
     }
 
     /**
@@ -43,13 +44,21 @@ class Player extends Object {
         return this.#hand;
     }
 
+    /**
+     * Gets the single backup card.
+     * @returns - Card that is the backup.
+     */
+    get_backup() {
+        return this.#backup;
+    }
+
     evaluate(commonCards) {
         let score = []; // Format: [type of hand, tiebreakers]
         // Sort hand first via buckets.
         let buckets = [];
         for (const e in Value) {buckets.push([])};
-        this.#hand.forEach(card => {buckets[card.get_value()].push(card)});
-        commonCards.forEach(card => {buckets[card.get_value()].push(card)});
+        this.#hand.forEach(card => {buckets[Value[card.get_value()]].push(card)});
+        commonCards.forEach(card => {buckets[Value[card.get_value()]].push(card)});
 
         // Search for straights.
         if (this.#hand.length + commonCards.length >= 5) {
@@ -74,15 +83,15 @@ class Player extends Object {
                         }
                         if (match) {
                             // Straight flush found. Check for royal flush.
-                            if (buckets[i][0].get_value() == Value.A) {
+                            if (Value[buckets[i][0].get_value()] == Value.A) {
                                 score = [9, [Value.A]];
                             }
                             else {
-                                score = [8, [buckets[i][0].get_value()]];
+                                score = [8, [Value[buckets[i][0].get_value()]]];
                             }
                         }
                         else {
-                            score = [4, [buckets[i][0].get_value()]];
+                            score = [4, [Value[buckets[i][0].get_value()]]];
                         }
                     }
                 }
@@ -186,7 +195,7 @@ class Player extends Object {
                 if (found) {
                     // Flush found.
                     let highs = [];
-                    for (let c of suitBucket[found]) highs.push(c.get_value());
+                    for (let c of suitBucket[found]) highs.push(Value[c.get_value()]);
                     score = [5, highs];
                 }
             }
@@ -204,7 +213,8 @@ class Player extends Object {
             score = [0, highs];
         }
 
-        return score;
+        let temp = new Score(score);
+        return temp;
     }
 }
 
