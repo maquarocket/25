@@ -117,7 +117,8 @@ button.move {
 
 .player, .community-hand {
     max-width: 100%;
-    height: calc(80px + 5px + 3em); /* Card height + padding + text?*/
+    /*height: calc(80px + 5px + 3em); /* Card height + padding + text?*/
+    height: fit-content;
     border: 5px solid black;
     border-radius: 5px;
     margin: 5px;
@@ -145,9 +146,9 @@ button.move {
     justify-content: space-evenly;
 }
 
-.nameplate > * {
+.nameplate > *, .results > * {
     width: fit-content;
-    max-width: 50%;
+    /* max-width: 50%; */
     margin: 0;
 }
 

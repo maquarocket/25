@@ -69,8 +69,13 @@ class Game extends Object {
         }
         else if (this.#playTurn == 3) {
             let main = Array.from(this.#mainTable.querySelectorAll('my-card'));
+            let side = Array.from(this.#burnTable.querySelectorAll('my-card'));
+            let scores1 = [];
+            let scores2 = [];
             // Open all non-folded cards.
             for (let i = 0; i < this.#players.length; i++) {
+                scores1.push(null);
+                scores2.push(null);
                 let p = this.#players[i];
                 if (!this.#folded[i]) {
                     for (let c of p.get_cards()) {
@@ -79,9 +84,13 @@ class Game extends Object {
                         }
                     }
                     // if (p.get_backup().is_flipped()) p.get_backup().flip();
+                    let score = p.evaluate(main);
+                    scores1[i] = score;
+                    p.ui.querySelector('.first').innerText = score.print();
+                    score = p.evaluate(side);
+                    scores2[i] = score;
+                    p.ui.querySelector('.second').innerText = score.print();
                 }
-                let score = p.evaluate(main);
-                p.ui.querySelector('.results').innerText = score.print();
             }
             this.#playTurn += 1;
         }
@@ -93,7 +102,8 @@ class Game extends Object {
     clean_up() {
         this.#movesUI.querySelector('.call').removeEventListener('click', this.fn_call);
         for (let p of this.#players) {
-            p.ui.querySelector('.results').innerText = "";
+            p.ui.querySelector('.first').innerText = "";
+            p.ui.querySelector('.second').innerText = "";
         }
     }
 }

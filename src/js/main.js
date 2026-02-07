@@ -70,6 +70,12 @@ function make_hand(playerName) {
     let results = document.createElement('div');
     results.classList.add('results');
     player.appendChild(results);
+    let mainRes = document.createElement('p');
+    mainRes.classList.add('first');
+    results.appendChild(mainRes);
+    let sideRes = document.createElement('p');
+    sideRes.classList.add('second');
+    results.appendChild(sideRes);
     return player;
 }
 // Setting up the play area with players.
