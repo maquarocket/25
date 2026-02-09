@@ -186,6 +186,7 @@ class Game extends Object {
     clean_up() {
         this.#movesUI.querySelector('.call').removeEventListener('click', this.fn_call);
         this.#movesUI.querySelector('.switch').removeEventListener('click', this.fn_switch);
+        this.#movesUI.querySelector('.switch').removeAttribute('disabled');
         for (let p of this.#players) {
             p.ui.querySelector('.first').innerText = "";
             p.ui.querySelector('.second').innerText = "";
