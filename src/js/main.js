@@ -131,26 +131,8 @@ startRestart.addEventListener('click', () => {
     let hands = target.querySelectorAll('.player');
     if (started()) {
         game.clean_up();
-        // Retrieving cards.
-        for (let player of hands) {
-            let cards = player.querySelectorAll('my-card');
-            for (let card of cards) {
-                card.remove();
-                if (card.is_flipped()) card.flip();
-                card.display_half(false);
-                deck.push(card);
-            }
-        }
-        let table = document.querySelectorAll('.community-hand');
-        for (let t of table) {
-            let cards = t.querySelectorAll('my-card');
-            for (let card of cards) {
-                card.remove();
-                if (card.is_flipped()) card.flip();
-                card.display_half(false);
-                deck.push(card);
-            }
-        }
+        
+        // Setting the correct number of players.
         let current = game.get_playerCount();
         if (get_playersInput() < current) {
             hands = target.querySelectorAll('.player');
@@ -169,18 +151,6 @@ startRestart.addEventListener('click', () => {
         }
         startRestart.innerText = 'Restart Game';
     }
-    // Actually dealing the cards.
-    deck.shuffle();
-    console.log(deck.count());
-    hands = document.querySelectorAll('.player');
-    for (let player of hands) {
-        for (let i = 0; i < 2; i++) {
-            player.querySelector('.hand').appendChild(deck.draw());
-        }
-        let backupCard = deck.draw();
-        backupCard.shadowRoot.getElementById('card').classList.add('half');
-        player.querySelector('.backup').appendChild(backupCard);
-    }
-    show_cards(showBox.checked);
     game = new Game(get_playersInput(), deck);
+    show_cards(showBox.checked);
 });

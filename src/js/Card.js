@@ -189,6 +189,18 @@ class Card extends HTMLElement {
         }
     }
 
+    /**
+     * Checks if a card is on 'half' display. USed for unswitched backup cards.
+     * @returns - Boolean.
+     */
+    is_half() {
+        return this.#sr.getElementById('card').classList.contains('half');
+    }
+
+    /**
+     * Sets the half display status of a card.
+     * @param {boolean} bool - True to display as half, else false.
+     */
     display_half(bool) {
         if (bool) {
             this.#sr.getElementById('card').classList.add('half');

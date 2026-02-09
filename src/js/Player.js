@@ -34,6 +34,9 @@ class Player extends Object {
      */
     add_card(card) {
         this.#hand.push(card);
+        if (this.ui) {
+            this.ui.querySelector('.hand').appendChild(card);
+        }
     }
 
     /**
@@ -50,6 +53,27 @@ class Player extends Object {
      */
     get_backup() {
         return this.#backup;
+    }
+
+    set_backup(card) {
+        if (!this.#backup) {
+            this.#backup = card;
+            if (this.ui) {
+                this.ui.querySelector('.backup').appendChild(card);
+            }
+        }
+        else throw Error("Already has backup card!");
+    }
+
+    /**
+     * Removes backup card from player & returns the card.
+     * @returns - Card.
+     */
+    remove_backup() {
+        let card = this.#backup;
+        this.#backup.remove();
+        this.#backup = null;
+        return card;
     }
 
     evaluate(commonCards) {
@@ -215,6 +239,23 @@ class Player extends Object {
 
         let temp = new Score(score);
         return temp;
+    }
+
+    /**
+     * Switches a hand card with any backup card.
+     * @param {Card} card - Player's own card that wants to be switched with a backup card.
+     * @param {Player} player - The player whose backup card will be taken from.
+     */
+    switch(card, player) {
+        let backup = player.get_backup();
+        if (!backup.is_half()) throw ErrorEvent("Invalid card selection!");
+        player.remove_backup();
+        backup.display_half(false);
+        card.remove();
+        let pos = this.#hand.indexOf(card);
+        this.#hand.splice(pos, 1, backup);
+        this.ui.querySelector('.hand').appendChild(backup);
+        this.ui.querySelector('.backup').appendChild(card);
     }
 }
 

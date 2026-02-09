@@ -71,10 +71,20 @@ button.move {
     border: 2px solid black;
 }
 
+.moves-layer-one {
+    display: grid;
+    grid-template-columns: repeat(11, 1fr);
+}
+
 .move.call {
     height: 3em;
-    width: 100%;
+    grid-column: 1 / 8;
     background-color: rgb(31, 255, 31);
+}
+
+.move.switch {
+    grid-column: 9 / 12;
+    background-color: yellow;
 }
 
 .moves-layer-two {
@@ -165,4 +175,8 @@ my-card {
     border: 2px solid black;
     border-radius: 5px;
     display: inline-block;
+}
+
+my-card.selected {
+    border: 5px dashed yellow;
 }

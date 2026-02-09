@@ -16,6 +16,9 @@ class Game extends Object {
 
     #movesUI;
     fn_call;
+    #playerSwitch = [null, null];
+    fn_selected;
+    fn_switch;
 
     /**
      * Initialises a game of 25.
@@ -46,6 +49,57 @@ class Game extends Object {
         this.#movesUI = document.querySelector('.moves-area');
         this.fn_call = () => {this.play()};
         this.#movesUI.querySelector('.call').addEventListener('click', this.fn_call);
+        this.fn_selected = (e) => {
+            let elem = e.target;
+            while (elem.nodeName != "MY-CARD") {
+                elem = elem.parentNode;
+            }
+            if (elem.classList.contains('selected')) {
+                elem.classList.remove('selected');
+                let source = elem.parentNode;
+                if (source.classList.contains('hand')) {
+                    this.#playerSwitch[0] = null;
+                }
+                else if (source.classList.contains('backup')) {
+                    this.#playerSwitch[1] = null;
+                }
+                else throw new Error("something went wrong!");
+            }
+            else {
+                elem.classList.add('selected');
+                let source = elem.parentNode;
+                if (source.classList.contains('hand')) {
+                    if (this.#playerSwitch[0]) this.#playerSwitch[0].classList.remove('selected');
+                    this.#playerSwitch[0] = elem;
+                }
+                else if (source.classList.contains('backup')) {
+                    if (this.#playerSwitch[1]) this.#playerSwitch[1].classList.remove('selected');
+                    this.#playerSwitch[1] = elem;
+                }
+                else throw new Error("something went wrong!");
+            }
+        };
+        console.log(this.#deck.count());
+        this.init_deal();
+        this.fn_switch = (e) => {
+            if (this.#playerSwitch[0] && this.#playerSwitch[1]) {
+                for (let p of this.#players) {
+                    if (p.get_backup() === this.#playerSwitch[1]) {
+                        this.#players[0].switch(this.#playerSwitch[0], p);
+                        break;
+                    }
+                }
+                if (this.#playerSwitch[1].is_flipped()) this.#playerSwitch[1].flip();
+                for (let c of this.#playerSwitch) c.classList.remove('selected');
+                e.target.removeEventListener('click', this.fn_switch);
+                e.target.setAttribute('disabled', '');
+                for (let p of this.#players) {
+                    let cards = p.ui.querySelectorAll('my-card');
+                    for (let c of cards) c.removeEventListener('click', this.fn_selected);
+                }
+            }
+        };
+        this.#movesUI.querySelector('.switch').addEventListener('click', this.fn_switch);
     }
 
     /**
@@ -54,6 +108,27 @@ class Game extends Object {
      */
     get_playerCount() {
         return this.#players.length;
+    }
+
+    /**
+     * Deals cards to all players to begin a game.
+     */
+    init_deal() {
+        this.#deck.shuffle();
+        for (let p of this.#players) {
+            for (let i = 0; i < 2; i++) {
+                let card = this.#deck.draw();
+                p.add_card(card);
+            }
+            let backup = this.#deck.draw();
+            backup.shadowRoot.getElementById('card').classList.add('half');
+            p.set_backup(backup);
+            backup.addEventListener('click', this.fn_selected);
+        }
+        let playerHand = this.#players[0].ui.querySelector('.hand').querySelectorAll('my-card');
+        for (let c of playerHand) {
+            c.addEventListener('click', this.fn_selected);
+        }
     }
 
     play() {
@@ -101,9 +176,30 @@ class Game extends Object {
      */
     clean_up() {
         this.#movesUI.querySelector('.call').removeEventListener('click', this.fn_call);
+        this.#movesUI.querySelector('.switch').removeEventListener('click', this.fn_switch);
         for (let p of this.#players) {
             p.ui.querySelector('.first').innerText = "";
             p.ui.querySelector('.second').innerText = "";
+        }
+        // Retrieve cards.
+        for (let p of this.#players) {
+            let cards = p.ui.querySelectorAll('my-card');
+            for (let c of cards) {
+                c.classList.remove('selected');
+                c.removeEventListener('click', this.fn_selected);
+                c.remove();
+                if (c.is_flipped()) c.flip();
+                c.display_half(false);
+                this.#deck.push(c);
+            }
+        }
+        let tables = document.querySelectorAll('.community-hand');
+        for (let t of tables) {
+            let cards = t.querySelectorAll('my-card');
+            for (let c of cards) {
+                c.remove();
+                this.#deck.push(c);
+            }
         }
     }
 }
