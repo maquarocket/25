@@ -84,7 +84,6 @@ class Game extends Object {
                 else throw new Error("something went wrong!");
             }
         };
-        console.log(this.#deck.count());
         this.init_deal();
         this.fn_switch = (e) => {
             if (this.#playerSwitch[0] && this.#playerSwitch[1]) {

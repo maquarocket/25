@@ -1,5 +1,3 @@
-import Value from "./Value.js";
-import Suit from "./Suit.js";
 import Card from "./Card.js";
 
 /**
