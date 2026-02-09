@@ -162,6 +162,10 @@ button.move {
     margin: 0;
 }
 
+.temp {
+    display: inline-flex;
+}
+
 .bowl {
     width: 1em;
     height: 1em;

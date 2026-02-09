@@ -24,7 +24,7 @@ class Game extends Object {
      * Initialises a game of 25.
      * @param {Number} players - Number of players for the game. Must be between 1 and 14 inclusive.
      */
-    constructor(players, deck) {
+    constructor(players, deck, prevBowl) {
         super();
 
         if (players < 0 || players > 14) throw RangeError("Number of players out of range!");
@@ -45,6 +45,11 @@ class Game extends Object {
         }
         this.#players = temp;
         this.#playTurn = 0;
+
+        this.#bowlPlayer = (prevBowl + 1) % players;
+        let bowl = document.createElement('div');
+        bowl.classList.add('bowl');
+        this.#players[this.#bowlPlayer].ui.querySelector('.temp').appendChild(bowl);
 
         this.#movesUI = document.querySelector('.moves-area');
         this.fn_call = () => {this.play()};
@@ -108,6 +113,10 @@ class Game extends Object {
      */
     get_playerCount() {
         return this.#players.length;
+    }
+
+    get_bowlPlayer() {
+        return this.#bowlPlayer;
     }
 
     /**
@@ -201,6 +210,7 @@ class Game extends Object {
                 this.#deck.push(c);
             }
         }
+        this.#players[this.#bowlPlayer].ui.querySelector('.bowl').remove();
     }
 }
 

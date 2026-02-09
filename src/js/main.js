@@ -54,6 +54,9 @@ function make_hand(playerName) {
     name.classList.add('player-name');
     name.innerText = playerName;
     nameplate.appendChild(name);
+    let temp = document.createElement('div');
+    temp.classList.add('temp');
+    nameplate.appendChild(temp);
     let amount = document.createElement('p');
     amount.classList.add('player-money');
     amount.innerText = '$1000';
@@ -129,7 +132,9 @@ showBox.addEventListener('input', (e) => {show_cards(e.target.checked)});
 // Dealing cards.
 startRestart.addEventListener('click', () => {
     let hands = target.querySelectorAll('.player');
+    let prevBowl = -1;
     if (started()) {
+        prevBowl = game.get_bowlPlayer();
         game.clean_up();
         
         // Setting the correct number of players.
@@ -151,6 +156,6 @@ startRestart.addEventListener('click', () => {
         }
         startRestart.innerText = 'Restart Game';
     }
-    game = new Game(get_playersInput(), deck);
+    game = new Game(get_playersInput(), deck, prevBowl);
     show_cards(showBox.checked);
 });
