@@ -9,6 +9,7 @@ class Game extends Object {
     #folded = [];
     #bets = [];
     #runpool = [];
+    #switchMoney = [];
     #bowlPlayer = 0;
     #mainTable;
     #burnTable;
@@ -39,6 +40,7 @@ class Game extends Object {
             this.#folded.push(false);
             this.#bets.push(0);
             this.#runpool.push(0);
+            this.#switchMoney.push(0);
             let player = this.#players[i];
             player = new Player(Array.from(player.querySelector('.hand').querySelectorAll('my-card')), player.querySelector('.backup').querySelector('my-card'), parseInt(player.querySelector('.player-money').innerText.slice(1)), player);
             temp.push(player);
@@ -83,6 +85,10 @@ class Game extends Object {
                 }
                 else throw new Error("something went wrong!");
             }
+            console.log(this.#playerSwitch[1] === this.#players[0].get_backup());
+            if (this.#playerSwitch[0] && this.#playerSwitch[1]) this.#movesUI.querySelector('.switch').classList.add('ready');
+            else this.#movesUI.querySelector('.switch').classList.remove('ready');
+            this.aux_set_switch_cost();
         };
         this.init_deal();
         this.fn_switch = (e) => {
@@ -97,9 +103,17 @@ class Game extends Object {
                 for (let c of this.#playerSwitch) c.classList.remove('selected');
                 e.target.removeEventListener('click', this.fn_switch);
                 e.target.setAttribute('disabled', '');
+                e.target.classList.add('done');
+                e.target.classList.remove('ready');
                 for (let p of this.#players) {
                     let cards = p.ui.querySelectorAll('my-card');
                     for (let c of cards) c.removeEventListener('click', this.fn_selected);
+                }
+                if (e.target.innerText.length > 6) {
+                    let cost = parseInt(e.target.innerText.slice(9, -1));
+                    this.#players[0].take_money(cost);
+                    document.getElementById('main-money').innerText = "$" + (parseInt(document.getElementById('main-money').innerText.slice(1)) + cost).toString();
+                    this.#switchMoney[0] += cost;
                 }
             }
         };
@@ -143,12 +157,10 @@ class Game extends Object {
         if (this.#playTurn == 0) {
             this.#burnTable.querySelector('.card-area').appendChild(this.#deck.draw());
             for (let i = 0; i < 3; i++) this.#mainTable.querySelector('.card-area').appendChild(this.#deck.draw());
-            this.#playTurn += 1;
         }
         else if (this.#playTurn == 1 || this.#playTurn == 2) {
             this.#burnTable.querySelector('.card-area').appendChild(this.#deck.draw());
             this.#mainTable.querySelector('.card-area').appendChild(this.#deck.draw());
-            this.#playTurn += 1;
         }
         else if (this.#playTurn == 3) {
             let main = Array.from(this.#mainTable.querySelectorAll('my-card'));
@@ -175,17 +187,34 @@ class Game extends Object {
                     p.ui.querySelector('.second').innerText = score.print();
                 }
             }
-            this.#playTurn += 1;
+            this.game_end();
+            return;
+        }
+        this.#playTurn += 1;
+        this.aux_set_switch_cost();
+    }
+
+    /**
+     * Mini clean-up tasks to carry out the moment a game ends.
+     */
+    game_end() {
+        this.#movesUI.querySelector('.call').removeEventListener('click', this.fn_call);
+        this.#movesUI.querySelector('.switch').removeEventListener('click', this.fn_switch);
+        for (let p of this.#players) {
+            let cards = p.ui.querySelectorAll('my-card');
+            for (let c of cards) c.removeEventListener('click', this.fn_selected);;
         }
     }
 
     /**
-     * Terminates a game
+     * Carries out clean-up tasks before the Game object is discarded.
+     * MUST BE MANUALLY CALLED BEFORE STARTING A NEW GAME.
      */
     clean_up() {
-        this.#movesUI.querySelector('.call').removeEventListener('click', this.fn_call);
-        this.#movesUI.querySelector('.switch').removeEventListener('click', this.fn_switch);
+        this.game_end();
         this.#movesUI.querySelector('.switch').removeAttribute('disabled');
+        this.#movesUI.querySelector('.switch').classList.remove('done', 'ready');
+        this.#movesUI.querySelector('.switch').innerText = "Switch";
         for (let p of this.#players) {
             p.ui.querySelector('.first').innerText = "";
             p.ui.querySelector('.second').innerText = "";
@@ -195,7 +224,6 @@ class Game extends Object {
             let cards = p.ui.querySelectorAll('my-card');
             for (let c of cards) {
                 c.classList.remove('selected');
-                c.removeEventListener('click', this.fn_selected);
                 c.remove();
                 if (c.is_flipped()) c.flip();
                 c.display_half(false);
@@ -211,6 +239,13 @@ class Game extends Object {
             }
         }
         this.#players[this.#bowlPlayer].ui.querySelector('.bowl').remove();
+    }
+
+    aux_set_switch_cost() {
+        if (this.#playerSwitch[0] && this.#playerSwitch[1] && this.#playerSwitch[1] === this.#players[0].get_backup()) {
+            this.#movesUI.querySelector('.switch').innerText = "Switch ($" + (10 * 2 ** this.#playTurn).toString() + ")";
+        }
+        else if (this.#movesUI.querySelector('.switch').innerText != "Switch") this.#movesUI.querySelector('.switch').innerText = "Switch";
     }
 }
 

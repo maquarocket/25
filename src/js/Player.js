@@ -76,6 +76,18 @@ class Player extends Object {
         return card;
     }
 
+    take_money(amount) {
+        this.#money -= amount;
+        if (this.ui) this.ui.querySelector('.player-money').innerText = "$" + (parseInt(this.ui.querySelector('.player-money').innerText.slice(1)) - amount).toString();
+        return amount;
+    }
+
+    add_money(amount) {
+        this.#money -= amount;
+        if (this.ui) this.ui.querySelector('.player-money').innerText = "$" + (parseInt(this.ui.querySelector('.player-money').innerText.slice(1)) + amount).toString();
+        return this.#money;
+    }
+
     evaluate(commonCards) {
         let score = []; // Format: [type of hand, tiebreakers]
         // Sort hand first via buckets.
