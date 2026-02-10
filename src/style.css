@@ -168,10 +168,21 @@ button.move {
     justify-content: space-evenly;
 }
 
+.nameplate > * {
+    max-width: 33%;
+}
+
 .nameplate > *, .results > * {
     width: fit-content;
-    /* max-width: 50%; */
     margin: 0;
+}
+
+.win-text {
+    color: green;
+}
+
+.run-text {
+    color: red;
 }
 
 .temp {

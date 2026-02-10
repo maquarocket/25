@@ -85,7 +85,6 @@ class Game extends Object {
                 }
                 else throw new Error("something went wrong!");
             }
-            console.log(this.#playerSwitch[1] === this.#players[0].get_backup());
             if (this.#playerSwitch[0] && this.#playerSwitch[1]) this.#movesUI.querySelector('.switch').classList.add('ready');
             else this.#movesUI.querySelector('.switch').classList.remove('ready');
             this.aux_set_switch_cost();
@@ -185,8 +184,46 @@ class Game extends Object {
                     score = p.evaluate(side);
                     scores2[i] = score;
                     p.ui.querySelector('.second').innerText = score.print();
+                    
                 }
             }
+            let winScore;
+            for (let i = 0; i < scores1.length; i++) {
+                if (!this.#folded[i]) {
+                    if (winScore) {
+                        if (scores1[i].gt(winScore)) winScore = scores1[i];
+                    }
+                    else winScore = scores1[i];
+                }
+            }
+            let winners = [];
+            for (let i = 0; i < scores1.length; i++) if (!this.#folded[i] && scores1[i].eq(winScore)) winners.push(i);
+            let payout = parseInt(document.getElementById('main-money').innerText.slice(1)) / winners.length;
+            document.getElementById('main-money').innerText = "$0";
+            for (let w of winners) {
+                this.#players[w].ui.querySelector('.first').classList.add('win-text');
+                this.#players[w].ui.querySelector('.first').innerText = "WINNER: " + this.#players[w].ui.querySelector('.first').innerText;
+                this.#players[w].ui.querySelector('.second').innerText = "";
+                this.#players[w].add_money(payout);
+            }
+            let runScore;
+            for (let i = 0; i < scores2.length; i++) {
+                if (!this.#folded[i] && !winners.includes(i)) {
+                    if (runScore) {
+                        if (scores2[i].gt(runScore)) runScore = scores2[i];
+                    }
+                    else runScore = scores2[i];
+                }
+            }
+            let runners = [];
+            for (let i = 0; i < scores2.length; i++) if (!this.#folded[i] && scores2[i].eq(runScore)) runners.push(i);
+            payout = parseInt(document.getElementById('burn-money').innerText.slice(1)) / runners.length;
+            document.getElementById('burn-money').innerText = "$0";
+            for (let r of runners) {
+                this.#players[r].ui.querySelector('.second').classList.add('run-text');
+                this.#players[r].ui.querySelector('.second').innerText = "RUNNER: " + this.#players[r].ui.querySelector('.second').innerText;
+                this.#players[r].add_money(payout);
+                }
             this.game_end();
             return;
         }
@@ -217,7 +254,9 @@ class Game extends Object {
         this.#movesUI.querySelector('.switch').innerText = "Switch";
         for (let p of this.#players) {
             p.ui.querySelector('.first').innerText = "";
+            p.ui.querySelector('.first').classList.remove('win-text');
             p.ui.querySelector('.second').innerText = "";
+            p.ui.querySelector('.second').classList.remove('run-text');
         }
         // Retrieve cards.
         for (let p of this.#players) {
