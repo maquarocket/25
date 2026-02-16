@@ -241,10 +241,10 @@ class Game extends Object {
                 this.#players[r].ui.querySelector('.second').classList.add('run-text');
                 this.#players[r].ui.querySelector('.second').innerText = "RUNNER: " + this.#players[r].ui.querySelector('.second').innerText;
                 this.#players[r].add_money(payout);
-                }
-            for (let v of this.#bets) v = 0;
-            for (let v of this.#runpool) v = 0;
-            for (let v of this.#switchMoney) v = 0;
+            }
+            for (let i = 0; i < this.#bets.length; i++) this.#bets[i] = 0;
+            for (let i = 0; i < this.#runpool.length; i++) this.#runpool[i] = 0;
+            for (let i = 0; i < this.#switchMoney.length; i++) this.#switchMoney[i] = 0;
             this.game_end();
             return;
         }
