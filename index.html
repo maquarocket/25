@@ -113,17 +113,24 @@
             </ol>
         </div>
     </div>
+    <div class="hand-strength" hidden>
+        <button class="hide-hand-strength">x</button>
+        <img id="hand-strength-img" src="docs/img/poker-hand-strength.png" width="496" height="987" alt="Hand strength order for 5-card hands. The order is (from strongest to weakest): Royal flush, straight flush, 4 of a kind, full house, flush, straight, 3 of a kind, 2 pair, 1 pair, high card.">
+    </div>
     <div class="main-screen">
         <div class="header-content">
-            <button class="show-quick-instructions">?</button>
+            <div class="info-zone">
+                <button class="show-quick-instructions">?</button>
+                <button class="show-hand-strength">Hand Strengths</button>
+            </div>
             <div class="player-counts">
                 <label for="players-input">Number of players (max 14): </label>
                 <input id="players-input" type="number" value="4" min="1" max="14" step="1"/>
             </div>
             <button class="start-restart">Start Game</button>
             <div class="player-counts">
-                <label for="show-all-cards" hidden>Show all cards (use only for learning/cheating)</label>
-                <input type="checkbox" id="show-all-cards" hidden/>
+                <label for="show-all-cards">Show all cards (use only for learning/cheating)</label>
+                <input type="checkbox" id="show-all-cards" />
             </div>
         </div>
         <div class="moves-area">

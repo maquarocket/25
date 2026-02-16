@@ -9,6 +9,10 @@ import Game from "./Game.js";
 document.querySelector('.hide-quick-instructions').addEventListener('click', () => {document.querySelector('.quick-instructions').setAttribute('hidden', '')});
 document.querySelector('.show-quick-instructions').addEventListener('click', () => {document.querySelector('.quick-instructions').removeAttribute('hidden')});
 
+// Handing quick instructions.
+document.querySelector('.hide-hand-strength').addEventListener('click', () => {document.querySelector('.hand-strength').setAttribute('hidden', '')});
+document.querySelector('.show-hand-strength').addEventListener('click', () => {document.querySelector('.hand-strength').removeAttribute('hidden')});
+
 // Handling raise options.
 let raiseValue = document.getElementById('raise-value');
 document.querySelector('.increase-raise').addEventListener('click', () => {
