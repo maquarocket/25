@@ -54,8 +54,9 @@ class Game extends Object {
         this.#players[this.#bowlPlayer].ui.querySelector('.temp').appendChild(bowl);
 
         this.#movesUI = document.querySelector('.moves-area');
-        this.fn_call = () => {this.play()};
+        this.fn_call = (e) => {this.play(e)};
         this.#movesUI.querySelector('.call').addEventListener('click', this.fn_call);
+        this.#movesUI.querySelector('.raise').addEventListener('click', this.fn_call);
         this.fn_selected = (e) => {
             let elem = e.target;
             while (elem.nodeName != "MY-CARD") {
@@ -152,7 +153,17 @@ class Game extends Object {
         }
     }
 
-    play() {
+    play(e) {
+        let raise = e.target.innerText == "Raise";
+        if (raise) {
+            let amount = document.getElementById('raise-value').value;
+            for (let p of this.#players) {
+                p.take_money(amount);
+                let bowl = p.ui.querySelector('.bowl');
+                if (bowl) this.#burnTable.querySelector('#burn-money').innerText = "$" + (parseInt(this.#burnTable.querySelector('#burn-money').innerText.slice(1)) + parseInt(amount)).toString();
+                else this.#mainTable.querySelector('#main-money').innerText = "$" + (parseInt(this.#mainTable.querySelector('#main-money').innerText.slice(1)) + parseInt(amount)).toString();
+            }
+        }
         if (this.#playTurn == 0) {
             this.#burnTable.querySelector('.card-area').appendChild(this.#deck.draw());
             for (let i = 0; i < 3; i++) this.#mainTable.querySelector('.card-area').appendChild(this.#deck.draw());
@@ -236,6 +247,7 @@ class Game extends Object {
      */
     game_end() {
         this.#movesUI.querySelector('.call').removeEventListener('click', this.fn_call);
+        this.#movesUI.querySelector('.raise').removeEventListener('click', this.fn_call);
         this.#movesUI.querySelector('.switch').removeEventListener('click', this.fn_switch);
         for (let p of this.#players) {
             let cards = p.ui.querySelectorAll('my-card');
