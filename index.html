@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="src/css/style.css" />
     <title>25</title>
 </head>
 <body>
     <template id="my-card">
-        <link rel="stylesheet" href="card.css" />
+        <link rel="stylesheet" href="src/css/card.css" />
         <div id="card">
             <slot name="value"></slot>
             <slot name="suit"></slot>
@@ -122,8 +122,8 @@
             </div>
             <button class="start-restart">Start Game</button>
             <div class="player-counts">
-                <label for="show-all-cards">Show all cards (use only for learning/cheating)</label>
-                <input type="checkbox" id="show-all-cards" />
+                <label for="show-all-cards" hidden>Show all cards (use only for learning/cheating)</label>
+                <input type="checkbox" id="show-all-cards" hidden/>
             </div>
         </div>
         <div class="moves-area">
@@ -171,7 +171,7 @@
             </div>
         </div>
     </div>
-    <script type="module" src="js/unittest.js"></script>
-    <script type="module" src="js/main.js"></script>
+    <script type="module" src="src/js/unittest.js"></script>
+    <script type="module" src="src/js/main.js"></script>
 </body>
 </html>
