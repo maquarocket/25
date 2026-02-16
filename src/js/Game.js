@@ -156,12 +156,19 @@ class Game extends Object {
     play(e) {
         let raise = e.target.innerText == "Raise";
         if (raise) {
-            let amount = document.getElementById('raise-value').value;
-            for (let p of this.#players) {
+            let amount = parseInt(document.getElementById('raise-value').value);
+            for (let i = 0; i < this.#players.length; i++) {
+                let p = this.#players[i];
                 p.take_money(amount);
                 let bowl = p.ui.querySelector('.bowl');
-                if (bowl) this.#burnTable.querySelector('#burn-money').innerText = "$" + (parseInt(this.#burnTable.querySelector('#burn-money').innerText.slice(1)) + parseInt(amount)).toString();
-                else this.#mainTable.querySelector('#main-money').innerText = "$" + (parseInt(this.#mainTable.querySelector('#main-money').innerText.slice(1)) + parseInt(amount)).toString();
+                if (bowl) {
+                    this.#burnTable.querySelector('#burn-money').innerText = "$" + (parseInt(this.#burnTable.querySelector('#burn-money').innerText.slice(1)) + amount).toString();
+                    this.#runpool[i] += amount;
+                }
+                else {
+                    this.#mainTable.querySelector('#main-money').innerText = "$" + (parseInt(this.#mainTable.querySelector('#main-money').innerText.slice(1)) + amount).toString();
+                    this.#bets[i] += amount;
+                }
             }
         }
         if (this.#playTurn == 0) {
@@ -235,6 +242,9 @@ class Game extends Object {
                 this.#players[r].ui.querySelector('.second').innerText = "RUNNER: " + this.#players[r].ui.querySelector('.second').innerText;
                 this.#players[r].add_money(payout);
                 }
+            for (let v of this.#bets) v = 0;
+            for (let v of this.#runpool) v = 0;
+            for (let v of this.#switchMoney) v = 0;
             this.game_end();
             return;
         }
@@ -251,8 +261,17 @@ class Game extends Object {
         this.#movesUI.querySelector('.switch').removeEventListener('click', this.fn_switch);
         for (let p of this.#players) {
             let cards = p.ui.querySelectorAll('my-card');
-            for (let c of cards) c.removeEventListener('click', this.fn_selected);;
+            for (let c of cards) c.removeEventListener('click', this.fn_selected);
         }
+        // Redistribute remaining money. Happens on game restart without finishing a game.
+        for (let i = 0; i < this.#players.length; i++) {
+            this.#players[i].add_money(this.#bets[i]);
+            this.#players[i].add_money(this.#runpool[i]);
+            this.#players[i].add_money(this.#switchMoney[i]);
+        }
+        document.getElementById('main-money').innerText = "$0";
+        document.getElementById('burn-money').innerText = "$0";
+
     }
 
     /**
