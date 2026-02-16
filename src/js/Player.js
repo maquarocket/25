@@ -217,7 +217,7 @@ class Player extends Object {
                 for (let i = buckets.length - 1; i >= 0; i--) {
                     if (buckets[i].length > 0) {
                         for (let j = 0; j < buckets[i].length; j++) {
-                            suitBucket[buckets[i][j].get_suit().at(0)].push(buckets[i][j]);
+                            suitBucket[buckets[i][j].get_suit()].push(buckets[i][j]);
                         }
                     }
                     for (let s in suitBucket) {

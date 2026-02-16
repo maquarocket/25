@@ -228,8 +228,8 @@ button.move {
 }
 
 my-card {
-    width: calc(5/7*80px);
-    height: 80px;
+    aspect-ratio: 5 / 7;
+    width: 3em;
     border: 2px solid black;
     border-radius: 5px;
     display: inline-block;

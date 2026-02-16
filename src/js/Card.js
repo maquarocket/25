@@ -43,7 +43,7 @@ class Card extends HTMLElement {
                 this.#suit = suit;
                 this.#value = value;
 
-                if (e.target.getAttribute('name') == 'suit') {
+                if (e.target.getAttribute('name') == 'value') {
                     if (suit == 'D' || suit == 'H') {
                         e.target.setAttribute('class', 'red');
                     }
@@ -51,6 +51,11 @@ class Card extends HTMLElement {
                         e.target.setAttribute('class', 'black');
                     }
                     closeListener();
+                    
+                    // Set suit as emojis.
+                    let s = this.getElementsByTagName('span');
+                    for (let t of s) if (t.getAttribute('slot') == 'suit') s = t;
+                    s.innerText = Suit[this.#suit];
                 }
             }
         })
@@ -174,7 +179,7 @@ class Card extends HTMLElement {
                     e.innerText = this.#value;
                 }
                 else if (e.getAttribute('slot') == 'suit') {
-                    e.innerText = this.#suit;
+                    e.innerText = Suit[this.#suit];
                 }
             }
             card.classList.remove('back');
